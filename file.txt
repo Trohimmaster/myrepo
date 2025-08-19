@@ -1,1 +1,74 @@
-test
+{{ define "email.html" }}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 15px;
+    }
+    .alert-status {
+      font-size: 16px;
+      font-weight: bold;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .firing {
+      background: #ffe6e6;
+      color: #c0392b;
+    }
+    .resolved {
+      background: #e6ffe6;
+      color: #27ae60;
+    }
+    .details p {
+      margin: 6px 0;
+      font-size: 14px;
+      color: #333;
+    }
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #888;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Grafana Alert</h2>
+
+    <div class="alert-status {{ if eq .Status "firing" }}firing{{ else }}resolved{{ end }}">
+      Status: {{ .Status | toUpper }}
+    </div>
+
+    <div class="details">
+      <p><strong>Alert Name:</strong> {{ .Labels.alertname }}</p>
+      <p><strong>Severity:</strong> {{ .Labels.severity }}</p>
+      <p><strong>Instance:</strong> {{ .Labels.instance }}</p>
+      {{ if .Annotations.message }}
+        <p><strong>Message:</strong> {{ .Annotations.message }}</p>
+      {{ end }}
+    </div>
+
+    <div class="footer">
+      📧 This is an automated notification from Grafana.
+    </div>
+  </div>
+</body>
+</html>
+{{ end }}
